@@ -122,29 +122,27 @@ class TimerViewModel {
 
     func start() {
         if remainingSeconds == totalSeconds || remainingSeconds == 0 {
-            // Fresh start
             totalSeconds = (isBreak ? breakMinutes : workMinutes) * 60
             remainingSeconds = totalSeconds
         }
         isRunning = true
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            DispatchQueue.main.async {
-                self?.tick()
-            }
+            self?.tick()
         }
-        startOrUpdateLiveActivity()
+        // Live Activity on background — don't block the tap
+        Task.detached { [weak self] in self?.startOrUpdateLiveActivity() }
     }
 
     func pause() {
         isRunning = false
         timer?.invalidate()
         timer = nil
-        updateLiveActivityPaused()
+        Task.detached { [weak self] in self?.updateLiveActivityPaused() }
     }
 
     func reset() {
         pause()
-        endLiveActivity()
+        Task.detached { [weak self] in self?.endLiveActivity() }
         isBreak = false
         totalSeconds = workMinutes * 60
         remainingSeconds = totalSeconds
@@ -165,7 +163,7 @@ class TimerViewModel {
 
     private func finishSession() {
         pause()
-        endLiveActivity()
+        Task.detached { [weak self] in self?.endLiveActivity() }
 
         // Play alert sound
         selectedSound.playAlert()
@@ -183,79 +181,75 @@ class TimerViewModel {
 
     // MARK: - Live Activity
 
+    @MainActor
     private func startOrUpdateLiveActivity() {
         #if canImport(ActivityKit)
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
 
-        let attributes = PomodoroActivityAttributes(
-            taskName: taskName,
-            isBreak: isBreak,
-            totalSeconds: totalSeconds
-        )
-
+        let remaining = remainingSeconds
         let state = PomodoroActivityAttributes.ContentState(
-            endDate: Date.now.addingTimeInterval(TimeInterval(remainingSeconds)),
+            endDate: Date.now.addingTimeInterval(TimeInterval(remaining)),
             isPaused: false,
-            remainingSeconds: remainingSeconds
+            remainingSeconds: remaining
         )
 
-        // If there's already an activity, update it; otherwise start new
         if let activity = currentActivity {
-            Task {
-                await activity.update(
-                    ActivityContent(state: state, staleDate: nil)
-                )
+            let content = ActivityContent(state: state, staleDate: nil)
+            Task.detached {
+                await activity.update(content)
             }
         } else {
+            let attributes = PomodoroActivityAttributes(
+                taskName: taskName,
+                isBreak: isBreak,
+                totalSeconds: totalSeconds
+            )
             do {
-                let activity = try Activity.request(
+                currentActivity = try Activity.request(
                     attributes: attributes,
                     content: ActivityContent(state: state, staleDate: nil),
                     pushType: nil
                 )
-                currentActivity = activity
             } catch {
-                print("Failed to start Live Activity: \(error.localizedDescription)")
+                print("Live Activity error: \(error.localizedDescription)")
             }
         }
         #endif
     }
 
+    @MainActor
     private func updateLiveActivityPaused() {
         #if canImport(ActivityKit)
         guard let activity = currentActivity else { return }
 
+        let remaining = remainingSeconds
         let state = PomodoroActivityAttributes.ContentState(
-            endDate: Date.now.addingTimeInterval(TimeInterval(remainingSeconds)),
+            endDate: Date.now.addingTimeInterval(TimeInterval(remaining)),
             isPaused: true,
-            remainingSeconds: remainingSeconds
+            remainingSeconds: remaining
         )
-
-        Task {
-            await activity.update(
-                ActivityContent(state: state, staleDate: nil)
-            )
+        let content = ActivityContent(state: state, staleDate: nil)
+        Task.detached {
+            await activity.update(content)
         }
         #endif
     }
 
+    @MainActor
     private func endLiveActivity() {
         #if canImport(ActivityKit)
         guard let activity = currentActivity else { return }
+        currentActivity = nil
 
         let finalState = PomodoroActivityAttributes.ContentState(
             endDate: Date.now,
             isPaused: true,
             remainingSeconds: 0
         )
-
-        Task {
-            await activity.end(
-                ActivityContent(state: finalState, staleDate: nil),
-                dismissalPolicy: .immediate
-            )
+        let content = ActivityContent(state: finalState, staleDate: nil)
+        Task.detached {
+            await activity.end(content, dismissalPolicy: .immediate)
         }
-        currentActivity = nil
         #endif
     }
 }

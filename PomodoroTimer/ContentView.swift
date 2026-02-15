@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @State private var vm = TimerViewModel()
     @State private var showSettings = false
-    @State private var pulseRing = false
 
     var body: some View {
         ZStack {
@@ -46,7 +45,6 @@ struct ContentView: View {
             }
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.85), value: showSettings)
-        .animation(.easeInOut(duration: 0.8), value: vm.isBreak)
         .onAppear {
             vm.notificationManager.requestPermission()
         }
@@ -57,24 +55,8 @@ struct ContentView: View {
     // ──────────────────────────────────────
 
     private var backgroundLayer: some View {
-        ZStack {
-            vm.backgroundGradient
-                .ignoresSafeArea()
-
-            // Ambient orb top-right
-            Circle()
-                .fill(vm.accentColor.opacity(0.07))
-                .frame(width: 300, height: 300)
-                .blur(radius: 80)
-                .offset(x: 120, y: -200)
-
-            // Ambient orb bottom-left
-            Circle()
-                .fill(vm.accentColor.opacity(0.05))
-                .frame(width: 250, height: 250)
-                .blur(radius: 70)
-                .offset(x: -130, y: 260)
-        }
+        vm.backgroundGradient
+            .ignoresSafeArea()
     }
 
     // ──────────────────────────────────────
@@ -145,6 +127,7 @@ struct ContentView: View {
                         .strokeBorder(vm.accentColor.opacity(0.2), lineWidth: 1)
                 )
         )
+        .animation(.easeInOut(duration: 0.5), value: vm.isBreak)
     }
 
     // ──────────────────────────────────────
@@ -153,60 +136,32 @@ struct ContentView: View {
 
     private var timerRing: some View {
         ZStack {
-            // Pulsing outer glow when running
+            // Outer glow ring (static, no blur)
             Circle()
-                .fill(vm.accentColor.opacity(pulseRing ? 0.06 : 0.02))
-                .frame(width: 290, height: 290)
-                .blur(radius: 20)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                        pulseRing = true
-                    }
-                }
+                .stroke(vm.accentColor.opacity(0.06), lineWidth: 24)
+                .frame(width: 260, height: 260)
 
             // Background track
             Circle()
-                .stroke(Color.white.opacity(0.05), lineWidth: 10)
-                .frame(width: 240, height: 240)
-
-            // Subtle inner track
-            Circle()
-                .stroke(Color.white.opacity(0.03), lineWidth: 20)
+                .stroke(Color.white.opacity(0.06), lineWidth: 8)
                 .frame(width: 240, height: 240)
 
             // Progress arc
             Circle()
                 .trim(from: 0, to: vm.progress)
                 .stroke(
-                    AngularGradient(
-                        colors: [
-                            vm.accentColor.opacity(0.2),
-                            vm.accentColor.opacity(0.6),
-                            vm.accentColor
-                        ],
-                        center: .center
-                    ),
-                    style: StrokeStyle(lineWidth: 10, lineCap: .round)
+                    vm.accentColor,
+                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
                 )
                 .frame(width: 240, height: 240)
                 .rotationEffect(.degrees(-90))
                 .animation(.linear(duration: 1), value: vm.progress)
 
-            // Glow behind the tip
-            Circle()
-                .fill(vm.accentColor.opacity(0.5))
-                .frame(width: 18, height: 18)
-                .blur(radius: 8)
-                .offset(y: -120)
-                .rotationEffect(.degrees(360 * vm.progress))
-                .animation(.linear(duration: 1), value: vm.progress)
-                .opacity(vm.progress > 0 ? 1 : 0)
-
             // Tip dot
             Circle()
                 .fill(Color.white)
                 .frame(width: 12, height: 12)
-                .shadow(color: vm.accentColor.opacity(0.8), radius: 6)
+                .shadow(color: vm.accentColor.opacity(0.6), radius: 4)
                 .offset(y: -120)
                 .rotationEffect(.degrees(360 * vm.progress))
                 .animation(.linear(duration: 1), value: vm.progress)
@@ -238,15 +193,14 @@ struct ContentView: View {
         HStack(spacing: 28) {
             // Reset
             controlButton(icon: "arrow.counterclockwise", size: 17) {
-                withAnimation(.spring(response: 0.4)) { vm.reset() }
+                vm.reset()
             }
 
             // Play / Pause (hero button)
             Button {
-                withAnimation(.spring(response: 0.4)) { vm.startPause() }
+                vm.startPause()
             } label: {
                 ZStack {
-                    // Outer glow ring
                     Circle()
                         .fill(vm.accentColor.opacity(0.15))
                         .frame(width: 80, height: 80)
@@ -254,18 +208,17 @@ struct ContentView: View {
                     Circle()
                         .fill(vm.accentColor)
                         .frame(width: 66, height: 66)
-                        .shadow(color: vm.accentColor.opacity(0.5), radius: 16, y: 4)
 
                     Image(systemName: vm.isRunning ? "pause.fill" : "play.fill")
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(Color.white)
-                        .offset(x: vm.isRunning ? 0 : 2) // visual center for play icon
+                        .offset(x: vm.isRunning ? 0 : 2)
                 }
             }
 
             // Skip
             controlButton(icon: "forward.fill", size: 17) {
-                withAnimation(.spring(response: 0.4)) { vm.skip() }
+                vm.skip()
             }
         }
     }
@@ -278,10 +231,6 @@ struct ContentView: View {
                 .frame(width: 48, height: 48)
                 .background(Color.white.opacity(0.07))
                 .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .strokeBorder(Color.white.opacity(0.06), lineWidth: 1)
-                )
         }
     }
 
@@ -354,7 +303,12 @@ struct ContentView: View {
             // Dimmed backdrop — ignores all safe areas
             Color.black.opacity(0.45)
                 .ignoresSafeArea()
-                .onTapGesture { showSettings = false }
+                .onTapGesture {
+                    #if os(iOS)
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    #endif
+                    showSettings = false
+                }
 
             // Card — respects keyboard safe area so it slides up
             VStack(spacing: 0) {
@@ -366,7 +320,7 @@ struct ContentView: View {
                     .padding(.bottom, 20)
 
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 0) {
+                    VStack(spacing: 1) {
                         // Title
                         HStack {
                             Text("Settings")
@@ -494,6 +448,14 @@ struct ContentView: View {
                         .padding(.bottom, 32)
                     }
                     .padding(.horizontal, 24)
+                }
+                #if os(iOS)
+                .scrollDismissesKeyboard(.interactively)
+                #endif
+                .onTapGesture {
+                    #if os(iOS)
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    #endif
                 }
             }
             .background(
