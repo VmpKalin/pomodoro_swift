@@ -6,14 +6,52 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B5D7FB122F42107800011CA9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D7FB112F42107800011CA9 /* WidgetKit.framework */; };
+		B5D7FB142F42107800011CA9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D7FB132F42107800011CA9 /* SwiftUI.framework */; };
+		B5D7FB252F42107A00011CA9 /* PomodoroTimerWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B5D7FB0F2F42107800011CA9 /* PomodoroTimerWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B5D7FB232F42107A00011CA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B5D1377C2F4145F3007148B8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B5D7FB0E2F42107800011CA9;
+			remoteInfo = PomodoroTimerWidgetsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B5D7FB2A2F42107A00011CA9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B5D7FB252F42107A00011CA9 /* PomodoroTimerWidgetsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		B5D137842F4145F3007148B8 /* PomodoroTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PomodoroTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5D7FB0F2F42107800011CA9 /* PomodoroTimerWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PomodoroTimerWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5D7FB112F42107800011CA9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B5D7FB132F42107800011CA9 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B5D137862F4145F3007148B8 /* PomodoroTimer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PomodoroTimer;
+			sourceTree = "<group>";
+		};
+		B5D7FB152F42107800011CA9 /* PomodoroTimerWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PomodoroTimerWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +64,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5D7FB0C2F42107800011CA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5D7FB142F42107800011CA9 /* SwiftUI.framework in Frameworks */,
+				B5D7FB122F42107800011CA9 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				B5D137862F4145F3007148B8 /* PomodoroTimer */,
+				B5D7FB152F42107800011CA9 /* PomodoroTimerWidgets */,
+				B5D7FB102F42107800011CA9 /* Frameworks */,
 				B5D137852F4145F3007148B8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +90,18 @@
 			isa = PBXGroup;
 			children = (
 				B5D137842F4145F3007148B8 /* PomodoroTimer.app */,
+				B5D7FB0F2F42107800011CA9 /* PomodoroTimerWidgetsExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B5D7FB102F42107800011CA9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B5D7FB112F42107800011CA9 /* WidgetKit.framework */,
+				B5D7FB132F42107800011CA9 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +114,12 @@
 				B5D137802F4145F3007148B8 /* Sources */,
 				B5D137812F4145F3007148B8 /* Frameworks */,
 				B5D137822F4145F3007148B8 /* Resources */,
+				B5D7FB2A2F42107A00011CA9 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B5D7FB242F42107A00011CA9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				B5D137862F4145F3007148B8 /* PomodoroTimer */,
@@ -69,6 +130,28 @@
 			productName = PomodoroTimer;
 			productReference = B5D137842F4145F3007148B8 /* PomodoroTimer.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B5D7FB0E2F42107800011CA9 /* PomodoroTimerWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5D7FB272F42107A00011CA9 /* Build configuration list for PBXNativeTarget "PomodoroTimerWidgetsExtension" */;
+			buildPhases = (
+				B5D7FB0B2F42107800011CA9 /* Sources */,
+				B5D7FB0C2F42107800011CA9 /* Frameworks */,
+				B5D7FB0D2F42107800011CA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B5D7FB152F42107800011CA9 /* PomodoroTimerWidgets */,
+			);
+			name = PomodoroTimerWidgetsExtension;
+			packageProductDependencies = (
+			);
+			productName = PomodoroTimerWidgetsExtension;
+			productReference = B5D7FB0F2F42107800011CA9 /* PomodoroTimerWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +164,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					B5D137832F4145F3007148B8 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					B5D7FB0E2F42107800011CA9 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -100,12 +186,20 @@
 			projectRoot = "";
 			targets = (
 				B5D137832F4145F3007148B8 /* PomodoroTimer */,
+				B5D7FB0E2F42107800011CA9 /* PomodoroTimerWidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B5D137822F4145F3007148B8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5D7FB0D2F42107800011CA9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +216,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5D7FB0B2F42107800011CA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B5D7FB242F42107A00011CA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B5D7FB0E2F42107800011CA9 /* PomodoroTimerWidgetsExtension */;
+			targetProxy = B5D7FB232F42107A00011CA9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B5D1378D2F4145F4007148B8 /* Debug */ = {
@@ -254,6 +363,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -264,10 +374,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.artur.PomodoroTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -281,7 +391,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
 		};
@@ -298,6 +408,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -308,10 +419,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.artur.PomodoroTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -325,7 +436,72 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		B5D7FB282F42107A00011CA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 33K57T9459;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PomodoroTimerWidgetsInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PomodoroTimerWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.artur.PomodoroTimer.PomodoroTimerWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B5D7FB292F42107A00011CA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 33K57T9459;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PomodoroTimerWidgetsInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PomodoroTimerWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.artur.PomodoroTimer.PomodoroTimerWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -346,6 +522,15 @@
 			buildConfigurations = (
 				B5D137902F4145F4007148B8 /* Debug */,
 				B5D137912F4145F4007148B8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5D7FB272F42107A00011CA9 /* Build configuration list for PBXNativeTarget "PomodoroTimerWidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5D7FB282F42107A00011CA9 /* Debug */,
+				B5D7FB292F42107A00011CA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
